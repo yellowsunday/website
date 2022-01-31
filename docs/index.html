@@ -2,17 +2,119 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <title>Yellow Sunday Ltd</title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                padding: 20px;
+                font-family: sans-serif;
+                font-size: 16px;
+            }
+
+            a {
+                color: #7c4e05;
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            a:active {
+                color: #a5680c;
+            }
+            a:focus {
+                border-radius: 3px;
+                outline: 1px solid #7c4e05;
+                outline-offset: 3px;
+            }
+            a:focus:not(:focus-visible) {
+                outline: 1px solid transparent;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background: #111;
+                    color: #eee;
+                }
+
+                a {
+                    color: #ffbe00;
+                }
+                a:active {
+                    color: #e19200;
+                }
+                a:focus {
+                    outline: 1px solid #ffbe00;
+                }
+            }
+
+            @keyframes text-fade-in {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            h1 {
+                font-weight: bold;
+                text-transform: uppercase;
+                font-size: calc(max(28px, 100vw / 22));
+            }
+
+            .fadein-text__content {
+                display: flex;
+                flex-wrap: wrap;
+                line-height: 1em;
+            }
+            .fadein-text__content-letter {
+                flex: 0 0 auto;
+            }
+            .fadein-text__content-letter {
+                --animation-speed: 0.5;
+                --animation-delay: 0.1s;
+                opacity: 0;
+                animation: 1s forwards calc(var(--animation-delay) * var(--animation-speed)) text-fade-in;
+            }
+            .fadein-text__content-letter:nth-child(2n) {
+                --animation-delay: 0.5s;
+            }
+            .fadein-text__content-letter:nth-child(3n) {
+                --animation-delay: 0.75s;
+            }
+            .fadein-text__content-letter:nth-child(5n) {
+                --animation-delay: 0.25s;
+            }
+            .fadein-text__content-letter:nth-child(7n) {
+                --animation-delay: 1.5s;
+            }
+
+            main, footer {
+                opacity: 0;
+                animation: 0.5s forwards 0.7s text-fade-in;
+            }
+
+            footer {
+                margin-top: 20px;
+                font-size: 0.9em;
+                font-style: italic;
+            }
+        </style>
     </head>
     <body>
         <header>
-            <h1>Yellow Sunday Ltd</h1>
+            <h1 class="fadein-text__content">Yellow Sunday Ltd</h1>
         </header>
 
         <main>
             <p>Software development, specialising in web front-end.</p>
 
-            <p>Javascript/HTML/CSS, J2EE, PHP, Ruby on Rails.</p>
+            <p>Vue/Javascript/HTML/CSS, Ruby on Rails.</p>
 
             <p>Contact: <a href="mailto:info@yellowsunday.co.uk">info@yellowsunday.co.uk</a></p>
         </main>
@@ -20,5 +122,16 @@
         <footer>
             <p>Yellow Sunday Ltd. Registered in the UK. Company No. 07961085</p>
         </footer>
+
+        <script>
+            const contentElems = document.querySelectorAll(".fadein-text__content:not(.initialized)",)
+            for (const elem of contentElems) {
+                elem.classList.add("initialized")
+                elem.setAttribute("aria-label", elem.innerText);
+                const letters = elem.innerText.trim().split("")
+                const spans = letters.map(letter => `<span class='fadein-text__content-letter' aria-hidden='true'>${letter === ' ' ? '&nbsp;' : letter}</span>`)
+                elem.innerHTML = spans.join("\n")
+            }
+        </script>
     </body>
 </html>
